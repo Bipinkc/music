@@ -1,0 +1,37 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+<section id="aa-genres">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="aa-popular-category-area">
+             <ul class="nav nav-tabs aa-products-tab">
+                <li class="active"><a href="#popular" data-toggle="tab">Genres</a></li>
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane fade in active" id="popular">
+                  <ul class="aa-product-catg">
+                      {% for genre in genres %}
+                    <li>
+                      <figure>
+                        <a class="aa-product-img" href="{% url 'main:genre_list' genre.genre %}"><img src="{% static 'img/' %}{{ genre.genre|lower}}.jpeg" alt="{{ genre.genre }}"></a>
+                         <figcaption>
+                          <h4 class="aa-product-title"><a href="{% url 'main:genre_list' genre.genre %}">{{ genre.genre|title }}</a></h4>
+                        </figcaption>
+                      </figure>
+                    </li>
+                      {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- / popular section -->
+
+{% endblock %}

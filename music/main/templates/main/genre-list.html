@@ -1,0 +1,39 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+<section id="aa-genre-list">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="aa-popular-category-area">
+             <ul class="nav nav-tabs aa-products-tab">
+                <li class="active"><a href="#genre" data-toggle="tab">{{ genre }}</a></li>
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane fade in active" id="genre">
+                  <ul class="aa-product-catg">
+                      {% for song in songs %}
+                    <li>
+                          <figure>
+                            <a class="aa-product-img" href="{% url 'main:usersong' song.pk %}">{% if song.image %}<img src="{{ song.image.url }}">{% else %}<img src="{% static 'img/view-slider/medium/polo-shirt-1.png' %}" alt="polo shirt img">{% endif %}</a>
+                            <a class="aa-add-card-btn"href="{% url 'main:usersong' song.pk %}"><span class="fa fa-play"></span></a>
+                              <figcaption>
+                              <h4 class="aa-product-title"><a href="{% url 'main:usersong' song.pk %}">{{ song.title }}</a></h4>
+                              <span class="aa-product-price">{{ song.artist }}</span></span>
+                            </figcaption>
+                          </figure>
+                        </li>
+                      {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- / popular section -->
+
+{% endblock %}

@@ -1,0 +1,135 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+{% load filters %}
+{% if request.user.is_authenticated %}
+  <!-- product category -->
+  <section id="aa-product-details">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="aa-product-details-area">
+            <div class="aa-product-details-content">
+              <div class="row">
+                <!-- Modal view slider -->
+                <div class="col-md-5 col-sm-5 col-xs-12">                              
+                  <div class="aa-product-view-slider">                                
+                    <div id="demo-1" class="simpleLens-gallery-container">
+                        <div class="simpleLens-big-image-container">{% if song.image %}<img src="{{ song.image.url }}">{% else %}<img src="{% static 'img/view-slider/medium/polo-shirt-1.png' %}" alt="polo shirt img">{% endif %}</div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Modal view content -->
+                <div class="col-md-7 col-sm-7 col-xs-12">
+                  <div class="aa-product-view-content">
+                    <h3>{{ song.title }}</h3>
+                    <div class="aa-price-block">
+                      <span class="aa-product-view-price">{{ song.artist }}</span>
+                    </div>
+                    <p>Released Date: <span>{{ song.release_date }}</span></p>
+                    {% with song.duration|get_duration as duration %}
+                    <p>Song Duration: <span>{{ duration.0 }} mins {{ duration.1 }} seconds</span></p>
+                    {% endwith %}
+                    <p>Genre: <span>{{ song.genre|title }}</span></p>
+
+                    <div class="aa-prod-view-bottom">
+                        {% if song|check_playlist:request.user %}
+                      <span class="aa-add-to-cart-btn">Added To Playlist</span>
+                        {% else %}
+                        <a class="aa-add-to-cart-btn" href="{% url 'main:add_playlist' song.pk %}"><span class="fa fa-plus"></span>Add To Playlist</a>
+                        {% endif %}
+                      <!--<a class="aa-add-to-cart-btn" href="#"><span class="fa fa-download"></span>Download</a>-->
+                    </div>
+                      {% if song.songfile %}
+                        <div class="aa-prod-view-bottom">
+                            <audio controls autoplay preload="auto" id="audio">
+                              <source src="{{ song.songfile.url }}"/>
+                            </audio>
+
+                        </div>
+                      {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Related product -->
+            <div id="aa-related">
+              <h3>Recommendations</h3>
+              <ul class="aa-product-catg aa-related-item-slider">
+                <!-- start single product item -->
+                  {% for item in recommendations %}
+                <li>
+                  <figure>
+                    <a class="aa-product-img" href="{% url 'main:usersong' item.pk %}">{% if item.image %}<img src="{{ item.image.url }}">{% else %}<img src="{% static 'img/view-slider/medium/polo-shirt-1.png' %}" alt="polo shirt img">{% endif %}</a>
+                    <a class="aa-add-card-btn"href="{% url 'main:usersong' item.pk %}"><span class="fa fa-play"></span>Play</a>
+                     <figcaption>
+                      <h4 class="aa-product-title"><a href="{% url 'main:usersong' item.pk %}">{{ item.title }}</a></h4>
+                      <span class="aa-product-price">{{ item.artist }}</span></span>
+                    </figcaption>
+                  </figure>
+                  <!-- product badge -->
+                  <span class="aa-badge aa-sale" href="#">RECOMMENDED!</span>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>  
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% else %}
+ <section id="aa-product-details">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="aa-product-details-area">
+            <div class="aa-product-details-content">
+              <div class="row">
+                <!-- Modal view slider -->
+                <div class="col-md-5 col-sm-5 col-xs-12">
+                  <div class="aa-product-view-slider">
+                    <div id="demo-1" class="simpleLens-gallery-container">
+                        <div class="simpleLens-big-image-container">{% if song.image %}<img src="{{ song.image.url }}">{% else %}<img src="{% static 'img/view-slider/medium/polo-shirt-1.png' %}" alt="polo shirt img">{% endif %}</div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Modal view content -->
+                <div class="col-md-7 col-sm-7 col-xs-12">
+                  <div class="aa-product-view-content">
+                    <h3>{{ song.title }}</h3>
+                    <div class="aa-price-block">
+                      <span class="aa-product-view-price">{{ song.artist }}</span>
+                    </div>
+                    <p>Released Date: <span>{{ song.release_date }}</span></p>
+                    {% with song.duration|get_duration as duration %}
+                    <p>Song Duration: <span>{{ duration.0 }} mins {{ duration.1 }} seconds</span></p>
+                    {% endwith %}
+                    <p>Genre: <span>{{ song.genre|title }}</span></p>
+
+                    <div class="aa-prod-view-bottom">
+                      <a class="aa-add-to-cart-btn" href="{% url 'main:add_playlist' song.pk %}"><span class="fa fa-plus"></span>Add To Playlist</a>
+                      <a class="aa-add-to-cart-btn" href="{% url 'main:login' %}?next={{ request.path }}"><span class="fa fa-play"></span>Play</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endif %}
+ {% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+    <!--var vid = document.querySelector("audio");-->
+
+   <!--vid.addEventListener('canplaythrough', function() {-->
+    <!--this.currentTime = 0.6;-->
+    <!--this.play();-->
+  <!--});-->
+</script>
+{% endblock %}
